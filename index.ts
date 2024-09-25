@@ -6,8 +6,10 @@ const menu  = [
   {name: 'Vegan', price: 9.99}
 ]
 
-const cashInRegister = 100;
+let cashInRegister = 100;
 const orderQueue = [];
+
+let nextOrderId = 1
 
 const addNewPizza = (obj) => {
   menu.push(obj);
@@ -20,8 +22,26 @@ const placeOrder =  (pizzaName) => {
 
   cashInRegister += income
 
-  orderQueue.push(order);
+  const newOrder = {id: nextOrderId, pizza : pizzaName, status: 'ordered'}
+
+  orderQueue.push(newOrder); 
+
+  nextOrderId++;
 
   return orderQueue;
 
 }
+
+const completeOrder = (orderId: number) => {
+  const order = orderQueue.find(item => item.id === orderId);
+  order.status = 'completed';
+
+  return order
+}
+
+let myName = 'John';
+
+
+placeOrder('Hawaiian');
+placeOrder('Hawaiian');
+completeOrder(1);
