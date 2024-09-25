@@ -18,7 +18,7 @@ const placeOrder =  (pizzaName) => {
   const order = menu.find(item => item.name === pizzaName);
   const income = order.price;
 
-  cashInRegister += income;
+  cashInRegister += income
 
   orderQueue.push(order);
 
