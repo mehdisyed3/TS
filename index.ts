@@ -4,32 +4,38 @@ type Pizza = {
   name: string,
   price: number
 }
+
 type Order = {
   id: number,
   pizza: Pizza,
   status: 'ordered' | 'completed'
 }
-
-const menu : Array<Pizza> = [
-  {id:2, name: 'Hawaiian', price: 10.99 },
-  {id:3, name: 'Pepperoni', price: 8.99 },
-  {id:4, name: 'Vegetarian', price: 7.99 },
-  {id:5, name: 'Meat Feast', price: 11.99 },
-  {id:6, name: 'Vegan', price: 9.99 }
-]
-
-
+let nextPizzaId = 1;
 let cashInRegister = 100;
 const orderQueue : Order[] = [];
 
 let nextOrderId = 1
 
-const addNewPizza = (obj: Pizza) => {
-  menu.push(obj);
-  return menu;
+
+const menu : Array<Pizza> = [
+  {id: nextPizzaId++, name: 'Hawaiian', price: 10.99 },
+  {id:nextPizzaId++, name: 'Pepperoni', price: 8.99 },
+  {id:nextPizzaId++, name: 'Vegetarian', price: 7.99 },
+  {id:nextPizzaId++, name: 'Meat Feast', price: 11.99 },
+  {id:nextPizzaId++, name: 'Vegan', price: 9.99 }
+]
+
+
+
+
+const addNewPizza = (obj: Omit<Pizza, 'id'>) : Pizza => {
+
+  let newPizza : Pizza = {id: nextPizzaId++, name: obj.name, price: obj.price}
+  menu.push(newPizza);
+  return newPizza ;
 }
 
-const placeOrder = (pizzaName: string) => {
+const placeOrder = (pizzaName: string) : Order | undefined => { // Array<Order> 
   const order = menu.find(item => item.name === pizzaName);
   console.log('>>>>>> > > > > > >>',order);
   if (!order) {
@@ -45,11 +51,11 @@ const placeOrder = (pizzaName: string) => {
 
   nextOrderId++;
 
-  return orderQueue;
+  return newOrder;
 
 }
 
-const completeOrder = (orderId: number) : Order => {
+const completeOrder = (orderId: number) : Order | undefined => {
   const order = orderQueue.find(item => item.id === orderId);
   if (!order) {
     throw new Error('Order not found');
@@ -61,7 +67,7 @@ const completeOrder = (orderId: number) : Order => {
 
 let myName = 'John';
 
-const getPizzaDetail = (identifier: string | number) => {
+const getPizzaDetail = (identifier: string | number) : Pizza | undefined => {
 
   if (typeof identifier === 'string') {
     return menu.find(item => item.name.toLowerCase() === identifier.toLowerCase());
